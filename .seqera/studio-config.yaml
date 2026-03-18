@@ -1,0 +1,9 @@
+schemaVersion: "0.0.1"
+kind: "studio-config"
+session:
+    description: "Seqera Studio Jupyter"
+    template:
+        kind: "registry"
+        registry: "public.cr.seqera.io/platform/data-studio-jupyter:4.2.5-0.11"
+        # kind: "dockerfile"        <-- uncomment if you want to customize the image
+        # dockerfile: "Dockerfile"  <-- path to your custom Dockerfile
