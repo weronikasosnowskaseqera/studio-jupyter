@@ -3,7 +3,7 @@ ARG CONNECT_CLIENT_VERSION
 FROM public.cr.seqera.io/platform/connect-client:0.11 AS connect
 
 
-FROM mambaorg/micromamba:1.5.10-noble as micromamba
+FROM mambaorg/micromamba:2.5.0 as micromamba
 
 
 FROM ubuntu:24.04
@@ -51,23 +51,19 @@ RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
     /usr/local/bin/_dockerfile_setup_root_prefix.sh
 
 SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
-COPY --chown=$MAMBA_USER:$MAMBA_USER ./docker/jupyter_4.2.5/env.yaml /tmp/env.yaml
-# need to have lower ulimit given micromamba issue:
-# https://github.com/mamba-org/micromamba-docker/issues/368#issuecomment-1706054594
-# https://github.com/DaanDeMeyer/reproc/pull/103
-RUN ulimit -n 262144 && \
-    micromamba install --yes --file /tmp/env.yaml && \
+COPY --chown=$MAMBA_USER:$MAMBA_USER .seqera/env.yaml /tmp/env.yaml
+RUN micromamba install --yes --name base --file /tmp/env.yaml && \
     micromamba clean --all --yes
 
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
 
-COPY ./docker/jupyter_4.2.5/_start_jupyter.sh /init
+COPY .seqera/_start_jupyter.sh /init
 RUN chmod +x /init
 
 ENV SHELL=/usr/bin/bash
 SHELL ["/usr/bin/bash", "-o", "pipefail", "-c"]
 
-COPY ./docker/jupyter_4.2.5/seqera_identity_provider.py /root/.jupyter/jupyter_lab_config.py
+COPY .seqera/seqera_identity_provider.py /root/.jupyter/jupyter_lab_config.py
 
 # Add connect binary
 COPY --from=connect /usr/bin/connect-client /usr/bin/connect-client
