@@ -1,6 +1,5 @@
-ARG CONNECT_CLIENT_VERSION
-
-FROM public.cr.seqera.io/platform/connect-client:0.11 AS connect
+ARG CONNECT_CLIENT_VERSION=0.12.0
+FROM public.cr.seqera.io/platform/connect-client:${CONNECT_CLIENT_VERSION} AS connect
 
 
 FROM mambaorg/micromamba:2.5.0 as micromamba
@@ -51,19 +50,19 @@ RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
     /usr/local/bin/_dockerfile_setup_root_prefix.sh
 
 SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
-COPY --chown=$MAMBA_USER:$MAMBA_USER .seqera/env.yaml /tmp/env.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER ./env.yaml /tmp/env.yaml
 RUN micromamba install --yes --name base --file /tmp/env.yaml && \
     micromamba clean --all --yes
 
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
 
-COPY .seqera/_start_jupyter.sh /init
+COPY ./_start_jupyter.sh /init
 RUN chmod +x /init
 
 ENV SHELL=/usr/bin/bash
 SHELL ["/usr/bin/bash", "-o", "pipefail", "-c"]
 
-COPY .seqera/seqera_identity_provider.py /root/.jupyter/jupyter_lab_config.py
+COPY ./seqera_identity_provider.py /root/.jupyter/jupyter_lab_config.py
 
 # Add connect binary
 COPY --from=connect /usr/bin/connect-client /usr/bin/connect-client

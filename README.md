@@ -1,8 +1,8 @@
 ## Seqera Studio Jupyter
 
 This repository contains the definition of Seqera Studio Jupyter. The `main` branch contains the
-latest supported version of JupyterLab with latest connect-client. To use an older version of any
-component, check the existing tags using the pattern: `jupyter/<version>/connect/<version>`.
+latest supported version of Jupyter with connect-client. To use an older version of any component,
+check the existing tags using the pattern: `jupyter/<version>/connect/<version>`.
 
 ## Components
 
@@ -36,5 +36,5 @@ To create a customized version:
 The pre-built image is available at:
 
 ```
-public.cr.seqera.io/platform/data-studio-jupyter:4.2.5-0.11
+public.cr.seqera.io/platform/data-studio-jupyter:4.2.5-0.12.0
 ```
