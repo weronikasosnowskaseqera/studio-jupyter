@@ -1,4 +1,4 @@
-ARG CONNECT_CLIENT_VERSION=0.12.0
+ARG CONNECT_CLIENT_VERSION=0.12.1
 FROM public.cr.seqera.io/platform/connect-client:${CONNECT_CLIENT_VERSION} AS connect
 
 
