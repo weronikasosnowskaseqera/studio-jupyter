@@ -50,6 +50,7 @@ RUN apt-get update --yes && apt-get install --yes --no-install-recommends \
     texlive-plain-generic \
     wget \
     libpq-dev \
+    sl \
     libgit2-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -69,6 +70,8 @@ RUN micromamba install --yes --name base --file /tmp/env.yaml && \
     micromamba clean --all --yes
 
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
+
+ENV PATH="${PATH}:/usr/games"
 
 COPY ./_start_jupyter.sh /init
 RUN chmod +x /init
